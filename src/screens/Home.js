@@ -69,7 +69,7 @@ const Home = ({navigation}) => {
 
       {renderChefIntro()}
 
-      <TouchableOpacity style={styles.referButton}>
+      <TouchableOpacity  style={styles.referButton}>
         <Text style={styles.referButtonText}>Refer A Friend</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -155,7 +155,7 @@ const SelectDateScreen = ({ navigation }) => {
           Object.keys(selectedDates).length === 0 && styles.disabledButton
         ]}
         disabled={Object.keys(selectedDates).length === 0}
-        onPress={() => navigation.navigate('SelectChef', {
+        onPress={() => navigation.navigate('SelectCuisineScreen', {
           selectedDates: selectedTimeSlots
         })}>
         <Text style={styles.confirmButtonText}>Confirm Date & Time</Text>

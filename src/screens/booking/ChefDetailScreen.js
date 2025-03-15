@@ -1,17 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { COLORS } from '../../common';
-import { moderateScale } from '../../common/Scale';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
+import {COLORS} from '../../common';
+import {moderateScale} from '../../common/Scale';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { IMAGES } from '../../assets';
+import {IMAGES} from '../../assets';
 
-const ChefDetailScreen = ({ route, navigation }) => {
-  const { chef } = route.params;
+const ChefDetailScreen = ({route, navigation}) => {
+  const {chef} = route.params;
 
   const popularDishes = [
-    { id: 1, image: IMAGES.dummyImage, name: 'Dish 1' },
-    { id: 2, image: IMAGES.dummyImage, name: 'Dish 2' },
-    { id: 3, image: IMAGES.dummyImage, name: 'Dish 3' },
+    {id: 1, image: IMAGES.dummyImage, name: 'Dish 1'},
+    {id: 2, image: IMAGES.dummyImage, name: 'Dish 2'},
+    {id: 3, image: IMAGES.dummyImage, name: 'Dish 3'},
   ];
 
   return (
@@ -42,11 +49,17 @@ const ChefDetailScreen = ({ route, navigation }) => {
 
         <Text style={styles.sectionTitle}>About</Text>
         <Text style={styles.aboutText}>
-          I started my journey as a home cook in 2017 and now I am a professional chef. I love to experiment with new recipes and create unique dishes. My specialty lies in creating fusion dishes that combine different cuisines.
+          I started my journey as a home cook in 2017 and now I am a
+          professional chef. I love to experiment with new recipes and create
+          unique dishes. My specialty lies in creating fusion dishes that
+          combine different cuisines.
         </Text>
 
         <Text style={styles.sectionTitle}>Popular Dishes by {chef.name}</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.dishesContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.dishesContainer}>
           {popularDishes.map(dish => (
             <View key={dish.id} style={styles.dishCard}>
               <Image source={dish.image} style={styles.dishImage} />
@@ -56,9 +69,9 @@ const ChefDetailScreen = ({ route, navigation }) => {
         </ScrollView>
       </ScrollView>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.bookButton}
-        onPress={() => navigation.navigate('ChefChat')}>
+        onPress={() => navigation.navigate('SelectLocationScreen')}>
         <Text style={styles.bookButtonText}>Book Chef Now</Text>
       </TouchableOpacity>
     </View>

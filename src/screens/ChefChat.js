@@ -5,7 +5,7 @@ import { moderateScale } from '../common/Scale';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { IMAGES } from '../assets';
 
-const ChefChat = ({ route }) => {
+const ChefChat = ({ route,navigation }) => {
   const [message, setMessage] = useState('');
 
   return (
@@ -56,7 +56,9 @@ const ChefChat = ({ route }) => {
           onChangeText={setMessage}
           multiline
         />
-        <TouchableOpacity style={styles.sendButton}>
+        <TouchableOpacity onPress={()=>{
+navigation.navigate('SelectLocationScreen')
+        }} style={styles.sendButton}>
           <Icon name="send" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
