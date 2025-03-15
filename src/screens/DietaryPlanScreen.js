@@ -5,97 +5,115 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
   TextInput,
 } from 'react-native';
-import CustomButton from '../components/CustomButton';
-import CustomTextInput from '../components/CustomTextInput';
-import {COLORS} from '../common';
-import {moderateScale, scale} from '../common/Scale';
-import {IMAGES} from '../assets';
+import {COLORS, SIZES} from '../theme/theme';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const dietaryOptions = [
-  'None',
-  'Non Veg',
-  'Low Carb',
-  'Vegan',
-  'High Fat',
-  'Gluten',
-  'Keto',
-  'No Beef',
-  'Halal',
-  'Kosher',
-  'Sea Food',
-  'No Nuts',
-];
+const DietaryPlanScreen = ({navigation}) => {
+  const [selectedDiets, setSelectedDiets] = useState([]);
+  const [allergies, setAllergies] = useState('');
+  const [notes, setNotes] = useState('');
 
-const DietaryPlanScreen = ({route, navigation}) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [additionalInfo, setAdditionalInfo] = useState('');
+  const dietaryOptions = [
+    'Paleo',
+    'Non-Veg',
+    'Low Carb',
+    'Vegan',
+    'Gluten',
+    'Clean',
+    'Keto',
+    'Sugar',
+    'No Pork',
+    'No Fish',
+    'Halal',
+    'Low Salt',
+    'No Nuts',
+  ];
 
-  const toggleOption = option => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter(item => item !== option));
+  const toggleDiet = diet => {
+    if (selectedDiets.includes(diet)) {
+      setSelectedDiets(selectedDiets.filter(item => item !== diet));
     } else {
-      setSelectedOptions([...selectedOptions, option]);
+      setSelectedDiets([...selectedDiets, diet]);
     }
   };
 
-
   return (
     <View style={styles.container}>
-      <View style={{flex: 1}}>
-        <View style={styles.headerView}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Image source={IMAGES.backIconImage} />
-          </TouchableOpacity>
-          <Image source={IMAGES.drawerBar} />
-        </View>
-        <View style={{marginVertical: moderateScale(15)}}>
-          <Text style={styles.header}>Select Your Dietary Plan</Text>
-          <ScrollView contentContainerStyle={styles.optionsContainer}>
-            {dietaryOptions.map(option => (
-              <TouchableOpacity
-                key={option}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back" size={24} color={COLORS.white} />
+      </TouchableOpacity>
+
+      <Text style={styles.title}>
+        Select <Text style={styles.highlight}>Dietary Plan</Text>
+      </Text>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.dietaryGrid}>
+          {dietaryOptions.map((diet, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.dietButton,
+                selectedDiets.includes(diet) && styles.selectedDiet,
+              ]}
+              onPress={() => toggleDiet(diet)}>
+              <Text
                 style={[
-                  styles.optionButton,
-                  selectedOptions.includes(option) && styles.selectedOption,
-                ]}
-                onPress={() => toggleOption(option)}>
-                <Text
-                  style={[
-                    styles.optionText,
-                    selectedOptions.includes(option) &&
-                      styles.selectedOptionText,
-                  ]}>
-                  {option}
-                </Text>
-              </TouchableOpacity>
-            ))}
-            <View style={styles.allergiesView}>
-              <Text style={styles.allergiesText}>{'Any Allergies'}</Text>
-              <CustomTextInput
-                mainStyle={styles.textInput}
-                placeholder="Tell Our Chefs More About Your Dietary Plan..."
-                multiline
-                value={additionalInfo}
-                onChangeText={setAdditionalInfo}
-              />
-            </View>
-          </ScrollView>
+                  styles.dietText,
+                  selectedDiets.includes(diet) && styles.selectedDietText,
+                ]}>
+                {diet}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
-      <CustomButton
-        flag={0}
-        title={'Next'}
-        onPress={()=>{
-navigation.navigate('FoodType')
-        }}
-        style={{marginTop: moderateScale(30)}}
-      />
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>
+            Tell Our Chefs More About Your Dietary Plan
+          </Text>
+          <TextInput
+            style={styles.textArea}
+            multiline
+            numberOfLines={4}
+            value={allergies}
+            onChangeText={setAllergies}
+            placeholder="Type your dietary preferences here..."
+            placeholderTextColor={COLORS.gray}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>
+            Tell Our Chefs More About Your Allergies...
+          </Text>
+          <TextInput
+            style={styles.textArea}
+            multiline
+            numberOfLines={4}
+            value={notes}
+            onChangeText={setNotes}
+            placeholder="Type your allergies here..."
+            placeholderTextColor={COLORS.gray}
+          />
+        </View>
+      </ScrollView>
+
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() =>
+          navigation.navigate('ChefListScreen', {
+            selectedDiets,
+            allergies,
+            notes,
+          })
+        }>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -103,61 +121,72 @@ navigation.navigate('FoodType')
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: moderateScale(20),
-    backgroundColor: '#F9F9F9',
+    backgroundColor: COLORS.background,
+    padding: SIZES.base * 2,
   },
-  headerView: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    margin: moderateScale(5),
+  backButton: {
+    marginBottom: SIZES.base * 2,
   },
-  header: {
-    fontSize: moderateScale(24),
-    fontWeight: 'bold',
-    marginBottom: moderateScale(20),
+  title: {
+    fontSize: 24,
+    color: COLORS.white,
+    marginBottom: SIZES.base * 3,
   },
-  optionsContainer: {
+  highlight: {
+    color: COLORS.primary,
+  },
+  dietaryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    marginBottom: SIZES.base * 3,
   },
-  optionButton: {
-    padding: moderateScale(10),
-    backgroundColor: '#FFF',
-    borderRadius: moderateScale(10),
-    borderWidth: 1,
-    borderColor: '#ddd',
-    margin: moderateScale(5),
+  dietButton: {
+    backgroundColor: COLORS.lightGray,
+    paddingHorizontal: SIZES.base * 2,
+    paddingVertical: SIZES.base,
+    borderRadius: SIZES.base,
+    marginBottom: SIZES.base,
+    width: '23%',
+    alignItems: 'center',
   },
-  selectedOption: {
-    backgroundColor: COLORS.btnColor,
+  selectedDiet: {
+    backgroundColor: COLORS.primary,
   },
-  optionText: {
-    color: COLORS.black,
-    fontSize: moderateScale(12),
-    fontWeight: '500',
+  dietText: {
+    color: COLORS.gray,
+    fontSize: 12,
   },
-  selectedOptionText: {
-    fontSize: moderateScale(12),
-    fontWeight: '500',
+  selectedDietText: {
     color: COLORS.white,
   },
-  allergiesView: {
-    marginTop: moderateScale(20),
+  inputContainer: {
+    marginBottom: SIZES.base * 3,
   },
-  allergiesText: {
-    marginTop: moderateScale(10),
-    fontSize: moderateScale(14),
-    fontWeight: '500',
+  inputLabel: {
+    color: COLORS.white,
+    marginBottom: SIZES.base,
+    fontSize: 14,
   },
-  textInput: {
-    height: moderateScale(100),
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: scale(10),
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+  textArea: {
+    backgroundColor: COLORS.lightGray,
+    borderRadius: SIZES.base,
+    padding: SIZES.base,
+    color: COLORS.white,
+    height: 100,
+    textAlignVertical: 'top',
+  },
+  nextButton: {
+    backgroundColor: COLORS.primary,
+    padding: SIZES.base * 1.5,
+    borderRadius: SIZES.base,
+    alignItems: 'center',
+    marginTop: SIZES.base,
+  },
+  nextButtonText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

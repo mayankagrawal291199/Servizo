@@ -86,9 +86,18 @@ const COLORS = {
 
   // swervix
 
-  purpleApp:"#F7F5FE",
-  btnColor:'#444444',
-  yellowApp:'#F7C74C',
+  purpleApp: '#F7F5FE',
+  btnColor: '#444444',
+  yellowApp: '#F7C74C',
+
+  primary: '#FF6B00',
+  secondary: '#1A1B1E',
+  background: '#2B3650',
+  white: '#FFFFFF',
+  gray: '#8F9098',
+  lightGray: '#2A2B2E',
+  success: '#4CAF50',
+  error: '#FF5252',
 };
 
 export default COLORS;
